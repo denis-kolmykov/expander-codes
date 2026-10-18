@@ -1,0 +1,17 @@
+[project]
+name = "expander-codes"
+version = "0.1.0"
+description = "Система сравнения реализаций экспандерных кодов"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "scipy>=1.10"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF", "DTZ"]
+# Комментарии и сообщения на русском языке: не считать кириллицу опечаткой.
+ignore = ["RUF001", "RUF002", "RUF003"]
