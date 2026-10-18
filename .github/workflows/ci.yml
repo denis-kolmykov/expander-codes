@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Получить исходный код
+        uses: actions/checkout@v4
+
+      - name: Установить Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Установить зависимости
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy scipy ruff
+
+      - name: Определить папку проекта
+        id: proj
+        run: echo "dir=$(dirname "$(find . -maxdepth 3 -name tests.py | head -1)")" >> "$GITHUB_OUTPUT"
+
+      - name: Проверка стиля кода (ruff)
+        working-directory: ${{ steps.proj.outputs.dir }}
+        run: ruff check .
+
+      - name: Модульные тесты
+        working-directory: ${{ steps.proj.outputs.dir }}
+        run: python tests.py
